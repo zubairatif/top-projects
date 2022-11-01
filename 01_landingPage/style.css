@@ -1,0 +1,521 @@
+/*/ Importing fonts Roboto 300, 400, 700  */
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap");
+
+/*/ Removing defaults and fixing box-sizing  */
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/*/ Defining color variables */
+:root {
+  --dark-bg-color: #1f2937;
+  --off-white: hsl(220 65% 92%);
+  --white: #f9faf8;
+  --accent: #3882f6;
+  --light-grey: hsl(200 10% 88%);
+}
+/*/ Setting 100% height on HTML and body */
+html,
+body {
+  scroll-behavior: smooth;
+  max-width: 100%;
+  height: 100%;
+  /*/ Font to be used on whole page */
+  font-family: "Roboto", sans-serif;
+}
+
+/*/ line height for smaller body text  */
+:not(h1, h2, h3, h4, h5, h6) {
+  line-height: 1.5;
+}
+/*/ Setting a text-shadow on larger texts */
+h1::selection,
+h2::selection,
+h3::selection,
+h4::selection,
+.logo::selection {
+  text-shadow: 0px 2px 2px rgba(3, 0, 0, 0.3);
+  background: var(--light-grey);
+  color: var(--dark-bg-color);
+}
+h1::-moz-selection,
+h2::-moz-selection,
+h3::-moz-selection,
+h4::-moz-selection,
+.logo::selection {
+  text-shadow: 0px 2px 2px rgba(3, 0, 0, 0.3);
+  background: var(--light-grey);
+  color: var(--dark-bg-color);
+}
+
+/* This is a div inside every container
+to contain the content to a fixed width 
+and stretch the section (background)
+to the whole viewport */
+
+.content-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+/*/ removing default styling from links + buttons */
+button,
+a {
+  background: none;
+  outline: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  text-decoration: none;
+}
+button:hover {
+  cursor: pointer;
+}
+/*/ Style for links on hover  */
+a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 4px;
+}
+/*/ Click and Hold by cursor on a link   */
+a:focus:not(.notlink) {
+  background: #fff3;
+  text-decoration: none;
+}
+/*/ tabbing through keyboard */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid currentColor;
+}
+/*/ Setting the bg color of top and bottom section  */
+.bg-accent {
+  background-color: var(--dark-bg-color);
+}
+
+/*/ The whole header container 100% => body  */
+.hero {
+  height: 100%;
+}
+/*/ Flex on wrapper inside hero */
+.hero > div {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+/*/ main header navigation */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block-start: 30px;
+}
+/*/ The site logo in header */
+.logo {
+  display: inline-block;
+  font-size: 1.6rem;
+  color: var(--white);
+  font-weight: 700;
+}
+/*/ The links */
+header nav ul {
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  gap: 1em;
+  color: var(--white);
+}
+/*/ The main hero section after header */
+.hero-content {
+  max-height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--off-white);
+  font-size: 1.3rem;
+}
+/*/ 50 / 50 for text and image  */
+.hero-content > * {
+  flex: 1 1 50%;
+  justify-content: space-between;
+}
+/*/ The heading in hero section */
+h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-block-end: 0.3em;
+}
+/* /The img besides content in hero section */
+.hero-img {
+  background-color: #f06d06;
+  min-height: 200px;
+  width: 50px;
+}
+/*/ Scroll down image at the end of hero section */
+.scroll-down-img {
+  display: block;
+  min-width: 100%;
+  filter: invert(1);
+  margin-block-end: 3rem;
+  animation: up-down 1.3s ease-in-out 1s infinite;
+  opacity: 0;
+  visibility: hidden;
+  transition: visibility 0s linear, opacity 1s ease-in;
+}
+.scroll-down-img:hover {
+  cursor: pointer;
+}
+/*/ up down animation for scroll icon */
+@keyframes up-down {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    pointer-events: all;
+  }
+  50% {
+    transform: translateY(1rem);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+  }
+}
+/*/ The link containing scroll down img */
+a.notlink {
+  width: 40px;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  display: inline-block;
+  align-self: center;
+}
+/*/ the styling for h2, Section's title */
+h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-block-end: 50px;
+}
+h2.title {
+  color: var(--dark-bg-color);
+  text-align: center;
+}
+
+.info {
+  background-color: var(--off-white);
+  padding-block: 120px;
+}
+.info-boxes {
+  margin: 0 auto;
+  max-width: 950px;
+  display: flex;
+  gap: 20px;
+}
+.info-box {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  /*/ Box shadow on bottom side */
+  box-shadow: 0px 2px 4px 0px hsl(220 70% 15% / 0.3);
+  -webkit-box-shadow: 0px 2px 4px 0px hsl(220 70% 15% / 0.3);
+  -moz-box-shadow: 0px 2px 4px 0px hsl(220 70% 15% / 0.3);
+}
+.info-box:hover {
+  background: hsl(220 70% 92%);
+}
+.info-box .info-img {
+  border: 3px solid var(--accent);
+  border-radius: 20px;
+  height: 120px;
+  display: grid;
+  place-items: center;
+}
+.info-box .info-text {
+  font-size: 1rem;
+  font-weight: 300;
+  font-style: italic;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.quote-section {
+  padding-block: 100px;
+  background-color: var(--light-grey);
+  border-bottom: 1px solid var(--dark-bg-color);
+}
+blockquote {
+  margin: 0 auto;
+  width: 800px;
+}
+blockquote .quote-text {
+  font-size: 2.2rem;
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.3;
+  color: var(--dark-bg-color);
+  margin-block-end: 10px;
+  position: relative;
+}
+.quote-text::before {
+  content: "“";
+  color: var(--dark-bg-color);
+  font-family: arial, sans-serif;
+  position: absolute;
+  font-size: 200px;
+  font-weight: 700;
+  bottom: 10px;
+  right: calc(100% + 15px);
+  pointer-events: none;
+  opacity: 0.1;
+}
+blockquote cite {
+  display: block;
+  width: 100%;
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-align: right;
+}
+.signup-cta {
+  background-color: var(--light-grey);
+  color: var(--white);
+  padding-block: 75px;
+}
+.signup-cta > div {
+  background-color: var(--accent);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px 80px;
+}
+.signup-cta-text {
+  flex: 1 0 75%;
+  font-size: 1.4rem;
+  font-weight: 400;
+}
+.cta-heading {
+  margin-block-end: 5px;
+}
+/*/ The div containing the signup button */
+.cta-button {
+  flex: 1 1 25%;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+/*/ actual button */
+.cta-signup-btn {
+  background-color: var(--accent);
+  border: 3px solid currentColor;
+  border-radius: 5px;
+  padding: 10px 35px;
+  font-size: 1.4rem;
+  font-weight: 400;
+  /*/ Animation inspired from: https://codepen.io/ytarabe/pen/XWWMzQJ*/
+  /*/ Changed the animation position */
+  display: block;
+  background: linear-gradient(to top, var(--white) 50%, var(--accent) 50%);
+  background-size: 100% 200%;
+  background-position: top;
+  transition: all 0.3s ease-out;
+}
+.cta-signup-btn:hover {
+  background-position: bottom;
+  color: black;
+}
+
+footer {
+  padding-block: 25px;
+  color: var(--white);
+  font-size: 1.1rem;
+  font-weight: 300;
+}
+footer > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+footer > div p:first-of-type {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+footer > div p:first-of-type::after {
+  content: " ";
+  display: inline-block;
+  height: 2px;
+  min-width: 25px;
+  background-color: currentColor;
+  margin-inline: 10px;
+}
+
+@media screen and (max-width: 1150px) {
+  .content-wrapper {
+    max-width: 900px;
+  }
+  .info-boxes {
+    max-width: 850px;
+  }
+  blockquote {
+    max-width: 750px;
+  }
+}
+@media screen and (max-width: 950px) {
+  .content-wrapper {
+    max-width: 850px;
+  }
+  .info-boxes {
+    max-width: 800px;
+  }
+  blockquote {
+    max-width: 700px;
+  }
+  .quote-text::before {
+    bottom: 75px;
+    font-size: 170px;
+    right: calc(100% + 25px);
+  }
+  .hero-content {
+    gap: 30px;
+    font-size: 1.3rem;
+  }
+  h1 {
+    font-size: 2.3rem;
+    line-height: 1.3;
+    margin-block-end: 0.5em;
+  }
+  h2 {
+    font-size: 2rem;
+  }
+}
+@media screen and (max-width: 850px) {
+  .content-wrapper {
+    max-width: 650px;
+  }
+  .info-boxes {
+    justify-content: space-around;
+    margin: 0 auto;
+    max-width: 600px;
+    flex-wrap: wrap;
+    gap: 30px 20px;
+  }
+  /*/ This class applies to all children of info-boxes */
+  .info-box {
+    flex: 0 48%;
+  }
+  .info-box .info-img {
+    height: 150px;
+  }
+  blockquote {
+    max-width: 550px;
+  }
+  .signup-cta > div {
+    padding-inline: 50px;
+  }
+  .signup-cta-text {
+    font-size: 1.2rem;
+  }
+  .cta-signup-btn {
+    font-size: 1.2rem;
+    padding: 10px 25px;
+  }
+}
+@media screen and (max-width: 700px) {
+  .content-wrapper {
+    max-width: 575px;
+    padding-inline: 20px;
+  }
+  header {
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+  }
+  header li > a {
+    font-size: 1.4rem;
+  }
+  .hero .hero-img {
+    display: none;
+  }
+  .hero .hero-content {
+    text-align: center;
+    padding: 25px;
+  }
+  .info-boxes {
+    max-width: 500px;
+    gap: 15px 10px;
+  }
+  .info-box {
+    flex: 0 46%;
+  }
+  .info-box .info-img {
+    height: 120px;
+  }
+  blockquote {
+    max-width: 450px;
+  }
+  .signup-cta > div {
+    padding-inline: 25px;
+    border-radius: 0;
+  }
+  .signup-cta-text {
+    font-size: 1.1rem;
+  }
+  .cta-signup-btn {
+    font-size: 1.1rem;
+    padding: 10px 20px;
+  }
+}
+@media screen and (max-width: 500px) {
+  .content-wrapper {
+    width: 100%;
+  }
+  .hero {
+    height: auto;
+  }
+  /*/ The content wrapper as hero section will be fw  */
+  .hero > div {
+    padding-inline: 0;
+  }
+  header {
+    padding-block: 30px;
+    align-items: center;
+  }
+  .logo {
+    font-size: 1.8rem;
+  }
+  header nav {
+    display: none;
+  }
+  /*/ Increasing specificity so it overrides previous */
+  .hero .hero-content {
+    flex: 1 1 100%;
+    background-image: linear-gradient(#0005, #000c), url("man-coding.png");
+    background-size: cover;
+    background-blend-mode: saturation;
+    height: 100%;
+    padding-block: 200px 100px;
+  }
+  h1 {
+    margin-block-end: 40px;
+  }
+  .hero-text p,
+  .hero-text h1 {
+    text-shadow: 5px 5px 5px #000;
+    color: var(--white);
+  }
+  .hero-text p {
+    font-size: 1.3rem;
+  }
+  .scroll-down-img,
+  a.notlink {
+    display: none;
+  }
+}
