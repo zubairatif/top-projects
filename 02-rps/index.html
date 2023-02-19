@@ -9,12 +9,17 @@
     <script src="script.js" defer></script>
   </head>
   <body>
-    <main>
-      <div>
-        <button onclick="game()" type="button">Start Game</button>
-        <p>Computer's Score: <span id="cScore"></span></p>
-        <p>Your Score: <span id="pScore"></span></p>
-      </div>
-    </main>
+    <div>
+      <p>Computer's Score: <span id="cScore"></span></p>
+      <p>Your Score: <span id="pScore"></span></p>
+    </div>
+    <button data-weapon="rock" type="button" class="options">rock</button
+    ><button data-weapon="paper" type="button" class="options">paper</button
+    ><button data-weapon="scissor" type="button" class="options">
+      scissor
+    </button>
+    <p id="roundResultDisplay"></p>
+    <p>Total games played: <span id="totalGames"></span></p>
+    <p>Total games won: <span id="gamesWon"></span></p>
   </body>
 </html>
