@@ -9,20 +9,23 @@ body {
   font-size: 22px;
   line-height: 1;
 }
-
+main {
+  display: flex;
+  padding: 3rem;
+  gap: 3rem;
+}
 #container {
   display: grid;
-  width: 512px;
-  height: 512px;
-  margin: 3rem auto;
+  width: 960px;
+  height: 960px;
 }
 div.gridSquare {
   background-color: #ffffff;
   outline: 1px solid #333;
 }
 .functions {
-  width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 1.2rem;
