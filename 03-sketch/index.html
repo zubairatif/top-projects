@@ -13,11 +13,25 @@
         <button title="new grid" onclick="askCreate()" type="button">
           New Grid
         </button>
-        <button title="Press ctrl" onclick="erase()" type="button">
+        <button title="Press ctrl" onclick="toggleEraser()" type="button">
           Toggle Eraser
         </button>
         <button title="Press " onclick="eraseAll()" type="button">
           Clear All
+        </button>
+        <button
+          title="Random Colours "
+          onclick="toggleRainbowMode()"
+          type="button"
+        >
+          Rainbow
+        </button>
+        <button
+          title="Single Colour "
+          onclick="toggleColorMode()"
+          type="button"
+        >
+          Single Colour
         </button>
         <label for="colorPicker">Choose a Colo(u)r</label>
         <input type="color" id="colorPicker" name="colorPicker" />
