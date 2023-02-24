@@ -32,7 +32,7 @@ function erase() {
   }
 }
 function eraseAll() {
-  squares.forEach((element) => (element.style.backgroundColor = "#fff"));
+  squares.forEach((element) => (element.style.backgroundColor = "#ffffff"));
 }
 function randomColor() {
   return "#" + Math.floor(Math.random() * 16777215).toString(16);
