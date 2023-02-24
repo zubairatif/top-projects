@@ -1,9 +1,10 @@
 const container = document.getElementById("container");
 const colorPicker = document.getElementById("colorPicker");
-let gridNumber = prompt("What res:  ");
-if (gridNumber > 32 || gridNumber < 4 || 512 % gridNumber !== 0) {
-  gridNumber = 16;
-}
+// let gridNumber = prompt("What res:  ");
+// if (gridNumber > 32 || gridNumber < 4 || 512 % gridNumber !== 0) {
+//   gridNumber = 16;
+// }
+let gridNumber = 16;
 let dimensions = 512 / gridNumber;
 let color = colorPicker.value;
 
@@ -25,12 +26,14 @@ for (let i = 1; i <= gridNumber * gridNumber; i++) {
 container.style.gridTemplateColumns = `repeat(${gridNumber}, 1fr)`;
 colorPicker.addEventListener("change", (e) => (color = e.target.value));
 function erase() {
-  if (color === colorPicker.value) {
-    color = "white";
+  console.log(color);
+  if (color !== "#ffffff") {
+    color = "#ffffff";
   } else {
     color = colorPicker.value;
   }
 }
+const squares = document.querySelectorAll(".gridSquare");
 function eraseAll() {
   squares.forEach((element) => (element.style.backgroundColor = "#ffffff"));
 }
