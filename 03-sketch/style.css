@@ -2,10 +2,14 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  font: inherit;
 }
 html,
 body {
   height: 100%;
+}
+body {
+  font-family: "Courier New", Courier, monospace;
   font-size: 22px;
   line-height: 1;
 }
@@ -31,11 +35,18 @@ div.gridSquare {
   gap: 1.2rem;
 }
 button {
-  padding: 5px 10px;
+  background: #fff;
+  color: #000;
+  box-shadow: 1px 2px currentColor;
+  padding: 0.75rem 1rem;
   cursor: pointer;
-  font-size: 22px;
+  outline: none;
 }
 button:hover {
-  background-color: #888;
-  color: #ffffff;
+  background-color: #ddd;
+}
+.btn.active {
+  background: #000000;
+  color: #fff;
+  stroke: #fff;
 }
