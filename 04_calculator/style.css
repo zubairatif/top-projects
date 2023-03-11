@@ -40,27 +40,21 @@ body {
   box-shadow: 0px 0px 5px 2px var(--darkColour);
 }
 
-#DisplayContainer > * {
-  padding: 0.25rem;
+#expression {
   text-align: right;
   display: block;
-}
-#previousExpression {
-  font-size: 1rem;
-  color: rgb(76, 64, 64);
-}
-#currentExpression {
+  padding: 0.25rem;
   font-size: 1.5rem;
 }
 #KeysContainer {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-areas:
-    "ac power multiply del"
-    "nine eight seven subtract"
-    "six five four add"
-    "three two one equals"
-    "decimal zero divide equals";
+    "ac divide times del"
+    "seven eight nine minus"
+    "four five six add"
+    "one two three equals"
+    "decimal zero power equals";
 }
 button.key {
   padding: 0.75rem 1rem;
@@ -81,14 +75,14 @@ button[data-equals] {
   grid-area: equals;
   background-color: var(--mainColour);
 }
-button[data-operation="multiply"] {
-  grid-area: multiply;
+button[data-operation="times"] {
+  grid-area: times;
 }
 button[data-operation="divide"] {
   grid-area: divide;
 }
-button[data-operation="subtract"] {
-  grid-area: subtract;
+button[data-operation="minus"] {
+  grid-area: minus;
 }
 button[data-operation="add"] {
   grid-area: add;
