@@ -22,12 +22,9 @@ function appendNumber(number) {
   }
 }
 // function which calculates the expression
-function equals() {
-  if (previousInput == "\u00A0") {
-    previousInput = 0;
-  }
-  let prevNum = parseFloat(previousInput);
-  let curNum = parseFloat(display.innerText);
+function equals(num1, num2) {
+  let prevNum = parseFloat(num1);
+  let curNum = parseFloat(num2);
   switch (operation) {
     case "plus":
       result = add(prevNum, curNum);
@@ -54,7 +51,7 @@ function equals() {
   if (display.innerText === "lol!") {
     previousInput = undefined;
   } else {
-    previousInput = display.innerText;
+    previousInput = result;
   }
   prevNum = undefined;
   curNum = undefined;
@@ -80,12 +77,15 @@ numberKeys.forEach((key) => {
 
 operatorKeys.forEach((key) => {
   key.addEventListener("click", (e) => {
-    console.log("prevPrev INPUT:", previousInput);
     prevprevInput = previousInput;
     previousInput = display.innerText;
-    operation = e.target.dataset.operation;
-    display.innerText = "\xa0";
-    console.log("previousInput:", previousInput);
+    if (prevprevInput === undefined) {
+      operation = e.target.dataset.operation;
+      display.innerText = "\xa0";
+    } else {
+      equals(prevprevInput, previousInput);
+      operation = e.target.dataset.operation;
+    }
   });
 });
 
@@ -104,7 +104,12 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-equalsKey.addEventListener("click", equals);
+equalsKey.addEventListener("click", () => {
+  if (previousInput == "\u00A0") {
+    previousInput = 0;
+  }
+  equals(previousInput, display.innerText);
+});
 // Enter Key working as equals/submit
 document.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
