@@ -1,0 +1,131 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700&display=swap");
+:root {
+  --mainColour: #f85;
+  --secondColour: #0cc;
+  --darkColour: #530;
+  --lightColour: #fec;
+}
+
+*,
+*:before,
+*:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: "Roboto";
+  font-size: 1.2rem;
+  color: rgb(91, 50, 0);
+}
+button,
+input {
+  font: inherit;
+  border: none;
+}
+input:not(:placeholder-shown):invalid {
+  color: rgb(255, 40, 40);
+  text-decoration: 0.1rem currentColor wavy underline;
+}
+body {
+  display: grid;
+  place-items: center;
+}
+#Container {
+  min-width: 350px;
+  max-width: max-content;
+  box-shadow: 0px 0px 5px 2px var(--darkColour);
+}
+
+#DisplayContainer > * {
+  padding: 0.25rem;
+  text-align: right;
+  display: block;
+}
+#previousExpression {
+  font-size: 1rem;
+  color: rgb(76, 64, 64);
+}
+#currentExpression {
+  font-size: 1.5rem;
+}
+#KeysContainer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-areas:
+    "ac power multiply del"
+    "nine eight seven subtract"
+    "six five four add"
+    "three two one equals"
+    "decimal zero divide equals";
+}
+button.key {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  background-color: var(--lightColour);
+}
+button.key:hover {
+  background-color: var(--secondColour);
+}
+button[data-ac] {
+  grid-area: ac;
+  background-color: var(--mainColour);
+}
+button[data-remove] {
+  grid-area: del;
+}
+button[data-equals] {
+  grid-area: equals;
+  background-color: var(--mainColour);
+}
+button[data-operation="multiply"] {
+  grid-area: multiply;
+}
+button[data-operation="divide"] {
+  grid-area: divide;
+}
+button[data-operation="subtract"] {
+  grid-area: subtract;
+}
+button[data-operation="add"] {
+  grid-area: add;
+}
+button[data-operation="power"] {
+  grid-area: power;
+}
+button[data-number="decimal"] {
+  grid-area: decimal;
+}
+button[data-number="one"] {
+  grid-area: one;
+}
+button[data-number="two"] {
+  grid-area: two;
+}
+button[data-number="three"] {
+  grid-area: three;
+}
+button[data-number="four"] {
+  grid-area: four;
+}
+button[data-number="five"] {
+  grid-area: five;
+}
+button[data-number="six"] {
+  grid-area: six;
+}
+button[data-number="seven"] {
+  grid-area: seven;
+}
+button[data-number="eight"] {
+  grid-area: eight;
+}
+button[data-number="nine"] {
+  grid-area: nine;
+}
+button[data-number="zero"] {
+  grid-area: zero;
+}

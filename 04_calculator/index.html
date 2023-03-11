@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Calculator</title>
+  </head>
+  <body>
+    <div id="Container">
+      <div id="DisplayContainer">
+        <span id="previousExpression">&nbsp;</span>
+        <input
+          id="currentExpression"
+          value=""
+          title="numbers or expressions"
+          pattern="^\d*\.?\d*$"
+          type="text"
+        />
+      </div>
+      <div id="KeysContainer">
+        <button data-number="one" class="key">1</button>
+        <button data-number="two" class="key">2</button>
+        <button data-number="three" class="key">3</button>
+        <button data-number="four" class="key">4</button>
+        <button data-number="five" class="key">5</button>
+        <button data-number="six" class="key">6</button>
+        <button data-number="seven" class="key">7</button>
+        <button data-number="eight" class="key">8</button>
+        <button data-number="nine" class="key">9</button>
+        <button data-number="zero" class="key">0</button>
+        <button data-number="decimal" class="key">.</button>
+        <button data-operation="plus" class="key">+</button>
+        <button data-operation="subtract" class="key">-</button>
+        <button data-operation="multiply" class="key">&times;</button>
+        <button data-operation="divide" class="key">/</button>
+        <button data-operation="power" class="key">x^</button>
+        <button data-equals class="key">=</button>
+        <button data-ac class="key">AC</button>
+        <button data-remove class="key">Del</button>
+      </div>
+    </div>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>
