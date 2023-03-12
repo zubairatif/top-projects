@@ -24,9 +24,11 @@ function appendNumber(number) {
 }
 // function which calculates the expression
 function operate(num1, num2) {
+  console.log(num1);
+  console.log(num2);
   // 160 is the code for u00A0 character
-  if (num1.charCodeAt(0) === 160 || (num2.charCodeAt(0) === 160) === "\u00A0")
-    return;
+  // if (num1.charCodeAt(0) === 160 || (num2.charCodeAt(0) === 160) === "\u00A0")
+  //   return;
   let prevNum = parseFloat(num1);
   let curNum = parseFloat(num2);
   switch (operation) {
@@ -112,7 +114,7 @@ document.addEventListener("keydown", (e) => {
 });
 
 equalsKey.addEventListener("click", () => {
-  if (previousInput == "\u00A0") {
+  if (previousInput == "\u00A0" || previousInput == "\u00A0") {
     previousInput = 0;
   }
   operate(previousInput, display.innerText);
