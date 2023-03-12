@@ -123,3 +123,7 @@ button[data-number="nine"] {
 button[data-number="zero"] {
   grid-area: zero;
 }
+button:disabled {
+  pointer-events: none !important;
+  background: #000 !important;
+}

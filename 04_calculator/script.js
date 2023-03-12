@@ -2,6 +2,7 @@
 const numberKeys = document.querySelectorAll("[data-number]");
 const operatorKeys = document.querySelectorAll("[data-operation]");
 const equalsKey = document.querySelector("[data-equals]");
+const decimalKey = document.querySelector("[data-number=decimal]");
 const acKey = document.querySelector("[data-ac]");
 const removeKey = document.querySelector("[data-remove]");
 const display = document.getElementById("expression");
@@ -12,7 +13,7 @@ let prevprevInput;
 let result;
 let answered = false; // temporary solution
 
-//Display (Sppends) number clicked to Calculator
+//Display (Appends) number clicked to Calculator
 function appendNumber(number) {
   if (answered === true) {
     display.innerText = number;
@@ -22,7 +23,10 @@ function appendNumber(number) {
   }
 }
 // function which calculates the expression
-function equals(num1, num2) {
+function operate(num1, num2) {
+  // 160 is the code for u00A0 character
+  if (num1.charCodeAt(0) === 160 || (num2.charCodeAt(0) === 160) === "\u00A0")
+    return;
   let prevNum = parseFloat(num1);
   let curNum = parseFloat(num2);
   switch (operation) {
@@ -48,6 +52,7 @@ function equals(num1, num2) {
   display.innerText = Number(result.toFixed(6));
   operation = undefined;
   currentInput = undefined;
+  prevprevInput = undefined;
   if (display.innerText === "lol!") {
     previousInput = undefined;
   } else {
@@ -66,6 +71,7 @@ acKey.addEventListener("click", () => {
   previousInput = undefined;
   prevNum = undefined;
   curNum = undefined;
+  prevprevInput = undefined;
 });
 
 // ________ All event Listeners _______
@@ -83,7 +89,7 @@ operatorKeys.forEach((key) => {
       operation = e.target.dataset.operation;
       display.innerText = "\xa0";
     } else {
-      equals(prevprevInput, previousInput);
+      operate(prevprevInput, previousInput);
       operation = e.target.dataset.operation;
     }
   });
@@ -91,11 +97,12 @@ operatorKeys.forEach((key) => {
 
 // Del click
 removeKey.addEventListener("click", () => {
+  if (display.textContent === "\u00A0") return;
   display.textContent = display.textContent.slice(0, -1);
 });
 // Del when ress backspace
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Backspace") delButton.click();
+  if (e.key === "Backspace") removeKey.click();
 });
 // number key presses on keyboard
 document.addEventListener("keydown", (e) => {
@@ -108,7 +115,7 @@ equalsKey.addEventListener("click", () => {
   if (previousInput == "\u00A0") {
     previousInput = 0;
   }
-  equals(previousInput, display.innerText);
+  operate(previousInput, display.innerText);
 });
 // Enter Key working as equals/submit
 document.addEventListener("keydown", (e) => {
