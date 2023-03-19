@@ -1,0 +1,173 @@
+@font-face {
+  font-family: "Norse Bold";
+  src: url("/norse_bold.woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+@import url("https://fonts.googleapis.com/css2?family=Merriweather+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap");
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  line-height: 1.5;
+  font-family: "Merriweather Sans", sans-serif;
+}
+img,
+picture,
+svg {
+  display: block;
+  max-width: 100%;
+  user-select: none;
+}
+input,
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:root {
+  --primary-colour: #596d48;
+  --secondary-colour: #2857da;
+  --dark-gray: #e5e7ebbe;
+  --light-gray: #e5e7eb;
+}
+main {
+  height: 100%;
+  display: flex;
+}
+
+#imageContainer {
+  background-image: url("background.webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  flex-basis: min(40%, 450px);
+  flex-shrink: 1;
+}
+#formContainer {
+  flex: 1 1 700px;
+  min-width: 50%;
+  max-width: min(1000px, calc(100%-500px));
+  flex-shrink: 2;
+  min-width: min-content;
+  padding: 10% 0;
+  margin: 0 auto;
+}
+#formContainer > *:not(form) {
+  padding-inline: 2rem;
+}
+#formContainer > * {
+  margin-block-end: 2rem;
+}
+#logoContainer {
+  display: flex;
+  background: #0007;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50%;
+}
+h1 {
+  color: white;
+  text-transform: uppercase;
+  font-family: "Norse Bold", sans-serif;
+  font-size: 5rem;
+  font-size: clamp(3.25rem, 4.688vw + 1.66rem, 5rem);
+}
+img.logo {
+  width: 5rem;
+  height: max-content;
+}
+
+p {
+  font-weight: 600;
+  font-size: 1rem;
+}
+h2 {
+  flex-basis: 100%;
+  font-size: 1.4rem;
+}
+form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  box-shadow: 0 1px 2px 0px black;
+  padding: 2rem;
+}
+
+label {
+  flex-basis: calc(50% - 2rem);
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+input {
+  display: block;
+  width: 100%;
+  border: 2px solid var(--light-gray);
+  margin-block-start: 0.3rem;
+  font-size: 1rem;
+}
+input:focus {
+  outline: 2px solid var(--secondary-colour);
+  box-shadow: 0 0 4px currentColor;
+}
+input:not(:placeholder-shown):invalid {
+  outline: 2px solid red;
+}
+#passwordReqs {
+  display: none;
+}
+form:has(#password:focus:invalid) #passwordReqs {
+  display: inline-block !important;
+}
+
+a {
+  color: var(--primary-colour);
+  text-decoration: none;
+  font-weight: 700;
+}
+a:hover,
+a:focus-visible {
+  outline: none;
+  text-decoration: underline;
+}
+#buttonContainer {
+  width: 100%;
+}
+button {
+  font-weight: 700;
+  background-color: var(--primary-colour);
+  color: white;
+  padding: 0.6rem 1.4rem;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+button:hover {
+  color: var(--primary-colour);
+  background-color: white;
+  outline: 3px solid var(--primary-colour);
+}
+p#loginText {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+@media screen and (max-width: 850px) {
+  form {
+    gap: 0;
+    padding: 0 2rem;
+  }
+  form > * {
+    flex-basis: 100%;
+  }
+}

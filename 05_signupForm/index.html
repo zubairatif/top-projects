@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up Form</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <section id="imageContainer">
+        <div id="logoContainer">
+          <img class="logo" src="logo.png" alt="Odin Logo" />
+          <h1>odin</h1>
+        </div>
+      </section>
+      <section id="formContainer">
+        <p>
+          This is not a real online service! You know you need something like
+          this in yur life to help you realize your deepest dreams. Sign up
+          <em>now</em> to get started.
+        </p>
+        <p>You <em>know</em> you want to.</p>
+        <form method="post" id="form">
+          <h2>Let's do this!</h2>
+          <label
+            >First Name
+            <input
+              type="text"
+              name="firstName"
+              id="firstName"
+              pattern="[a-zA-Z]*$"
+              title="Letters only"
+              placeholder="&nbsp;"
+              required
+          /></label>
+          <label
+            >Last Name
+            <input
+              type="text"
+              name="lastName"
+              id="lastName"
+              pattern="[a-zA-Z]*$"
+              title="Letters only"
+              placeholder="&nbsp;"
+              required
+          /></label>
+          <label
+            >Email
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="&nbsp;"
+              required
+          /></label>
+          <label
+            >Phone Number
+            <input
+              min="9"
+              max="15"
+              type="tel"
+              name="phone"
+              id="phone"
+              title="phone number with area code"
+              placeholder="&nbsp;"
+              required
+          /></label>
+          <label
+            >Password
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="&nbsp;"
+              autocomplete="new-password"
+              required
+          /></label>
+          <label
+            >Confirm Password
+            <input
+              title="type your password again"
+              type="password"
+              name="confirm"
+              id="confirm"
+              placeholder="&nbsp;"
+              required
+          /></label>
+          <div id="passwordReqs">
+            <ul>
+              <li>HELlo</li>
+              <li>HELlo</li>
+              <li>HELlo</li>
+            </ul>
+          </div>
+        </form>
+        <div id="buttonContainer">
+          <button type="submit" form="form">Create Account</button>
+        </div>
+        <p id="loginText">Already have an account? <a href="#">Log in</a></p>
+      </section>
+    </main>
+  </body>
+</html>
