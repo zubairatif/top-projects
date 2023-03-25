@@ -82,14 +82,26 @@ function createCard(title, author, pages, haveRead, bookNumber) {
     e.target.parentElement.style.display = "none";
     myLibrary.splice(bookNumber, 1);
   });
+  let cardMark = document.createElement("button");
+  cardMark.innerText = "Mark as read";
+  cardMark.style.backgroundColor = "#1b1";
+  cardMark.style.marginBlockEnd = "1rem";
+  cardMark.addEventListener("click", (e) => {
+    myLibrary[bookNumber].haveRead = "yes";
+    cardRead.style.display = "block";
+    cardMark.style.display = "none";
+  });
   cardContainer.appendChild(cardTitle);
   cardContainer.appendChild(cardAuthor);
   cardContainer.appendChild(cardPages);
+  let cardRead = document.createElement("h4");
+  cardRead.innerText = `Read`;
+  cardContainer.appendChild(cardRead);
+  cardRead.style.display = "none";
   if (haveRead === "yes") {
-    let cardRead = document.createElement("h4");
-    cardRead.innerText = `Read`;
-    cardContainer.appendChild(cardRead);
+    cardRead.style.display = "block";
   }
+  if (haveRead === "no") cardContainer.appendChild(cardMark);
   cardContainer.appendChild(cardRemove);
   main.appendChild(cardContainer);
 }
