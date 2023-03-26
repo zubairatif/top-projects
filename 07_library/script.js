@@ -55,11 +55,11 @@ function Book(title, author, pages, read) {
   this.author = author;
   this.pages = pages;
   this.haveRead = read;
-  this.toggleRead = function () {
-    haveRead === "yes";
-    return;
-  };
 }
+Book.prototype.toggleRead = function () {
+  haveRead === "yes";
+  return;
+};
 
 function addBookToLibrary(books) {
   for (let i = 0; i < books.length; i++) {
