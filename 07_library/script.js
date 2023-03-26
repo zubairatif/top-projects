@@ -55,8 +55,9 @@ function Book(title, author, pages, read) {
   this.author = author;
   this.pages = pages;
   this.haveRead = read;
-  this.info = function () {
-    return `${title} by ${author}. ${pages} pages, ${read}`;
+  this.toggleRead = function () {
+    haveRead === "yes";
+    return;
   };
 }
 
@@ -87,7 +88,7 @@ function createCard(title, author, pages, haveRead, bookNumber) {
   cardMark.style.backgroundColor = "#1b1";
   cardMark.style.marginBlockEnd = "1rem";
   cardMark.addEventListener("click", (e) => {
-    myLibrary[bookNumber].haveRead = "yes";
+    myLibrary[bookNumber].toggleRead();
     cardRead.style.display = "block";
     cardMark.style.display = "none";
   });
