@@ -3,9 +3,40 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+
     <title>Tic Tac Toe</title>
   </head>
   <body>
-    
+    <header>
+      <h1 class="title">Tic-Tac-Toe</h1>
+    </header>
+    <div class="status">Player X's turn</div>
+    <form id="choosePlayers">
+      <input type="text" name="nameOne" id="nameOne" required />
+      <input type="text" name="nametwo" id="nameTwo" required />
+      <input type="checkbox" name="isAi" id="isAi" />
+      <label for="isAi">AI</label>
+      <button type="submit">Start Game</button>
+    </form>
+    <div id="gameBoard">
+      <div class="box" data-index="0"></div>
+      <div class="box" data-index="1"></div>
+      <div class="box" data-index="2"></div>
+      <div class="box" data-index="3"></div>
+      <div class="box" data-index="4"></div>
+      <div class="box" data-index="5"></div>
+      <div class="box" data-index="6"></div>
+      <div class="box" data-index="7"></div>
+      <div class="box" data-index="8"></div>
+    </div>
+    <button class="restart">Restart</button>
+    <footer class="footer">
+      <p>
+        Copyright © 2023
+        <a href="https://github.com/zubairatif" target="_blank">Zubair</a>
+      </p>
+    </footer>
+    <script src="script.js" defer></script>
   </body>
 </html>
