@@ -1,5 +1,5 @@
-const Player = (name, mark) => {
-  return { name, mark };
+const Player = (name, mark, score = 0) => {
+  return { name, mark, score };
 };
 
 const GameBoard = (() => {
@@ -17,7 +17,7 @@ const GameBoard = (() => {
       newBox.dataset.index = index;
       newBox.addEventListener("click", Game.handleClick);
       boardContainer.addEventListener("keydown", (e) => {
-        if (e.code == Space) {
+        if (e.code === "Space") {
           Game.handleClick(e);
         }
       });
@@ -38,6 +38,7 @@ const Game = (() => {
   let isAi;
   let gameOver;
   const start = () => {
+    for (let i = 0; i < 9; i++) GameBoard.update(i, "");
     isAi = document.querySelector("#isAi").checked;
     let playerOne = document.querySelector("#playerOne").value;
     let playerTwo = isAi ? "AI" : document.querySelector("#playerTwo").value;
@@ -60,12 +61,14 @@ const Game = (() => {
     GameBoard.update(boxIndex, currentMark);
     displayController.displayTurns(players[currentPlayer].name);
     if (checkForWin(board, currentMark)) {
+      players[currentPlayer].score++;
       gameOver = true;
       displayController.displayWinner("won", players[currentPlayer].name);
     } else if (checkForTie(board)) {
       gameOver = true;
       displayController.displayWinner("tie", players[currentPlayer].name);
     }
+    displayController.updateScore(players);
     currentPlayer = currentPlayer === 0 ? 1 : 0;
   };
   const checkForWin = (board, mark) => {
@@ -100,6 +103,12 @@ const Game = (() => {
 
 const displayController = (() => {
   const statusDisplay = document.querySelector(".status");
+  const scoreOneDisplay = document.querySelector(".score_one");
+  const scoreTwoDisplay = document.querySelector(".score_two");
+  const updateScore = (players) => {
+    scoreOneDisplay.innerText = `${players[0].name}: ${players[0].score}`;
+    scoreTwoDisplay.innerText = `${players[1].name}: ${players[1].score}`;
+  };
   const displayTurns = (currentPlayer) => {
     statusDisplay.innerText = `${currentPlayer}'s Turn`;
   };
@@ -110,5 +119,5 @@ const displayController = (() => {
       statusDisplay.innerText = `${currentPlayer} won`;
     }
   };
-  return { displayWinner, displayTurns };
+  return { displayWinner, displayTurns, updateScore };
 })();
