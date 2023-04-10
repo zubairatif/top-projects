@@ -18,21 +18,34 @@ a:visited {
   color: inherit;
 }
 #gameBoard {
+  display: grid;
   grid-template-columns: repeat(3, 1fr);
-  display: none;
+  width: min-content;
 }
 .box {
-  width: 5rem;
+  width: 4rem;
   aspect-ratio: 1;
-  outline: 2px solid black;
   cursor: pointer;
   display: grid;
   place-content: center;
   font-size: 2.5rem;
   font-family: cursive;
+  border: 1px solid black;
+}
+
+.box:not(:first-child):not(:nth-child(2)):not(:nth-child(3)) {
+  border-top: none;
+}
+
+.box:not(:nth-child(3n + 1)) {
+  border-left: none;
+}
+.box:hover {
+  background-color: hsl(43, 100%, 97%);
 }
 button {
   max-width: fit-content;
+  max-width: -moz-fit-content;
   padding: 0.5rem 1rem;
   justify-self: center;
   cursor: pointer;
@@ -46,4 +59,14 @@ input:first-of-type {
 input[type="checkbox"] {
   height: 0.75rem;
   width: 0.75rem;
+}
+h1 {
+  font-family: monospace;
+  font-size: 2.25rem;
+  color: hsl(43, 80%, 43%);
+}
+.status {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-transform: capitalize;
 }
