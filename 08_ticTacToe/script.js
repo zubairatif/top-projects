@@ -3,6 +3,7 @@ const Player = (name, mark, score = 0) => {
 };
 
 const GameBoard = (() => {
+  let boxes;
   let gameBoard = ["", "", "", "", "", "", "", "", ""];
   const render = () => {
     let prevBoard = document.getElementById("gameBoard");
@@ -27,6 +28,8 @@ const GameBoard = (() => {
     document.body.insertBefore(boardContainer, restartBtn);
   };
   const update = (index, mark) => {
+    boxes = document.querySelectorAll(".box");
+    if (boxes.length > 0) boxes[index].innerText = mark;
     gameBoard[index] = mark;
   };
   const getGameBoard = () => gameBoard;
@@ -57,21 +60,42 @@ const Game = (() => {
     let boxIndex = currentBox.target.dataset.index;
     let currentMark = players[currentPlayer].mark;
     if (board[boxIndex] !== "") return;
-    currentBox.target.innerText = currentMark;
+    // currentBox.target.innerText = currentMark;
     GameBoard.update(boxIndex, currentMark);
     displayController.displayTurns(players[currentPlayer].name);
-    if (checkForWin(board, currentMark)) {
+    if (checkForWin(currentMark)) {
       players[currentPlayer].score++;
       gameOver = true;
       displayController.displayWinner("won", players[currentPlayer].name);
-    } else if (checkForTie(board)) {
+    } else if (checkForTie()) {
       gameOver = true;
       displayController.displayWinner("tie", players[currentPlayer].name);
     }
+    if (isAi) {
+      easyMove(board, players[1].mark);
+      if (checkForWin("O")) {
+        players[1].score++;
+        gameOver = true;
+        displayController.displayWinner("won", players[1].name);
+      } else if (checkForTie()) {
+        gameOver = true;
+        displayController.displayWinner("tie", players[1].name);
+      }
+    } else currentPlayer = currentPlayer === 0 ? 1 : 0;
     displayController.updateScore(players);
-    currentPlayer = currentPlayer === 0 ? 1 : 0;
   };
-  const checkForWin = (board, mark) => {
+  const easyMove = (board, mark) => {
+    if (!board.some((item) => item === "")) return;
+    let emptyBoxes = [];
+    for (let i = 0; i < board.length; i++) {
+      if (board[i] === "") emptyBoxes.push(i);
+    }
+    let randomBox = Math.floor(Math.random() * emptyBoxes.length);
+    GameBoard.update(emptyBoxes[randomBox], mark);
+  };
+  // const hardMove = (board) => {};
+  const checkForWin = (mark) => {
+    let board = GameBoard.getGameBoard();
     const WinningCombinations = [
       [0, 1, 2],
       [3, 4, 5],
@@ -82,13 +106,15 @@ const Game = (() => {
       [0, 4, 8],
       [2, 4, 6],
     ];
+    console.log("board for win: ", board);
     return WinningCombinations.some((combination) => {
       return combination.every((index) => {
         return board[index] == mark;
       });
     });
   };
-  const checkForTie = (board) => {
+  const checkForTie = () => {
+    let board = GameBoard.getGameBoard();
     return board.every((box) => box !== "");
   };
   const form = document.getElementById("choosePlayers");
