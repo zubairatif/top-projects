@@ -1,9 +1,10 @@
 // Factory Function for creating players
-const Player = (name, mark, score = 0) => {
-  return { name, mark, score };
+const Player = (name, mark, ai, score = 0) => {
+  return { name, mark, score, ai };
 };
 // Gameboard Module stores the state of the gameboard
 const GameBoard = (() => {
+  let boxes;
   let gameBoard = ["", "", "", "", "", "", "", "", ""];
   //Funciton for rendering HTML part of the frontend board
   const render = () => {
@@ -27,34 +28,50 @@ const GameBoard = (() => {
   };
   //Function for updating the gamebboard in the logic as well as on the frontend
   const update = (index, mark) => {
-    let boxes = document.querySelectorAll(".box");
-    if (boxes.length > 0) boxes[index].innerText = mark;
-    gameBoard[index] = mark;
+    boxes = document.querySelectorAll(".box");
+    if (boxes.length > 0) {
+      boxes[index].innerText = mark;
+      gameBoard[index] = mark;
+    }
   };
   //Used by other IIFEs to get access to the current state of the gameboard
   const getGameBoard = () => gameBoard;
-  return { render, update, getGameBoard };
+  const getEmptyBoxes = () => {
+    let board = getGameBoard();
+    let emptyBoxes = [];
+    for (let i = 0; i < board.length; i++) {
+      if (board[i] === "") emptyBoxes.push(i);
+    }
+    return emptyBoxes;
+  };
+  return { render, update, getGameBoard, getEmptyBoxes };
 })();
 //Game Logic
 const Game = (() => {
   let players = [];
   let currentPlayer = 0;
   let gameOver;
+  let difficulty;
   const start = () => {
-    console.log("currentPlayer: ", currentPlayer);
     gameOver = false;
+    // clearing the gameBoard array
     for (let i = 0; i < 9; i++) GameBoard.update(i, "");
-    isAi = document.querySelector("#is_ai").checked;
+
     let playerOne = document.querySelector("#player_one").value;
+
+    isAi = document.querySelector("#is_ai").checked;
     let playerTwo = isAi ? "AI" : document.querySelector("#player_two").value;
-    // difficulty = document.querySelector("#level_select").value;
+
+    difficulty = document.querySelector("#level_select").value;
+    // removing the form from display
     form.style.display = "none";
     // Only generating new players if there are none
     if (players.length === 0) {
-      players = [Player(playerOne, "X"), Player(playerTwo, "O")];
+      players = [Player(playerOne, "X", false), Player(playerTwo, "O", isAi)];
     }
     GameBoard.render();
     displayController.displayTurn(players[currentPlayer].name);
+    if (isAi && players[currentPlayer].ai) aiTurn(players[currentPlayer]);
   };
   const handleClick = (currentBox) => {
     let board = GameBoard.getGameBoard();
@@ -69,32 +86,45 @@ const Game = (() => {
 
     GameBoard.update(boxIndex, currentMark);
 
-    displayController.displayTurn(otherName);
+    if (!isAi) displayController.displayTurn(otherName);
 
-    if (checkForTie()) {
-      gameOver = true;
-      displayController.displayWinner("tie", currentName);
-    }
     if (checkForWin(currentMark)) {
       players[currentPlayer].score++;
       gameOver = true;
       displayController.displayWinner("won", currentName);
+    } else if (checkForTie()) {
+      gameOver = true;
+      displayController.displayWinner("tie", currentName);
     }
     // Also Switches the PLayer who goes first in the next round
     currentPlayer = currentPlayer === 0 ? 1 : 0;
+
+    if (players[currentPlayer].ai === true && gameOver === false)
+      aiTurn(players[currentPlayer]);
     displayController.updateScore(players);
   };
-  // Get a list of the indexes which are empty for the AI
-  const getEmptyBoxes = () => {
-    let board = GameBoard.getGameBoard();
-    let emptyBoxes = [];
-    for (let i = 0; i < board.length; i++) {
-      if (board[i] === "") emptyBoxes.push(i);
+  function aiTurn(player) {
+    let aiChoice = difficulty == 0 ? getAiChoice.easy() : getAiChoice.hard();
+    GameBoard.update(aiChoice, player.mark);
+    console.log("Ai is Checking some conditions");
+    if (checkForWin(player.mark)) {
+      console.log("Ai is checking for win");
+      player.score++;
+      gameOver = true;
+      displayController.displayWinner("won", player.name);
+    } else if (checkForTie()) {
+      console.log("Ai is checking for tie");
+      gameOver = true;
+      displayController.displayWinner("tie", player.name);
     }
-    return emptyBoxes;
-  };
+
+    currentPlayer = currentPlayer === 0 ? 1 : 0;
+  }
+  // Get a list of the indexes which are empty for the AI
+
   // Check if the current player has won
   const checkForWin = (mark) => {
+    console.log("Starting to detect win");
     let board = GameBoard.getGameBoard();
     const WinningCombinations = [
       [0, 1, 2],
@@ -106,6 +136,14 @@ const Game = (() => {
       [0, 4, 8],
       [2, 4, 6],
     ];
+    let winningIndexes = 0;
+    let winResult = WinningCombinations.some((combination) => {
+      winningIndexes = combination;
+      return combination.every((index) => {
+        return board[index] == mark;
+      });
+    });
+    if (winResult) displayController.styleWinner(winningIndexes);
     return WinningCombinations.some((combination) => {
       return combination.every((index) => {
         return board[index] == mark;
@@ -126,8 +164,21 @@ const Game = (() => {
   });
   return { start, handleClick };
 })();
+// Generates AI moves
+const getAiChoice = (() => {
+  const easy = () => {
+    let emptyBoxes = GameBoard.getEmptyBoxes();
+    let boxChosen = Math.floor(Math.random() * emptyBoxes.length);
+    return emptyBoxes[boxChosen];
+  };
+  const hard = () => {
+    let board = GameBoard.getGameBoard();
+  };
+  return { easy, hard };
+})();
 // Updates status on the frontend
 const displayController = (() => {
+  let boxes;
   const statusDisplay = document.querySelector(".status");
   const scoreOneDisplay = document.querySelector(".score_one");
   const scoreTwoDisplay = document.querySelector(".score_two");
@@ -145,5 +196,11 @@ const displayController = (() => {
       statusDisplay.innerText = `${currentPlayer} won`;
     }
   };
-  return { displayWinner, displayTurn, updateScore };
+  const styleWinner = (indexes) => {
+    boxes = document.querySelectorAll(".box");
+    indexes.forEach((index) => {
+      boxes[index].classList.add("win");
+    });
+  };
+  return { displayWinner, displayTurn, updateScore, styleWinner };
 })();

@@ -103,3 +103,7 @@ h1 {
   gap: 10px;
   margin-block: 20px 10px;
 }
+.win,
+.win:hover {
+  background-color: rgb(182, 243, 90);
+}
