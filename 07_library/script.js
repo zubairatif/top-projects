@@ -50,17 +50,18 @@ function bookExists(book) {
   });
 }
 
-function Book(title, author, pages, read) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.haveRead = read;
+class Book {
+  constructor(title, author, pages, read) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.haveRead = read;
+  }
+  toggleRead() {
+    haveRead === "yes";
+    return;
+  }
 }
-Book.prototype.toggleRead = function () {
-  haveRead === "yes";
-  return;
-};
-
 function addBookToLibrary(books) {
   for (let i = 0; i < books.length; i++) {
     let book = books[i];

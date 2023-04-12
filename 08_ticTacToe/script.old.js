@@ -1,18 +1,15 @@
-// Factory Function for creating players
 const Player = (name, mark, score = 0) => {
   return { name, mark, score };
 };
-// Gameboard Module stores the state of the gameboard
+
 const GameBoard = (() => {
+  let boxes;
   let gameBoard = ["", "", "", "", "", "", "", "", ""];
-  //Funciton for rendering HTML part of the frontend board
   const render = () => {
-    //Removes previous board when game restarts
     let prevBoard = document.getElementById("gameBoard");
     if (prevBoard !== null) {
       prevBoard.remove();
     }
-    // Creating HTML
     const boardContainer = document.createElement("div");
     boardContainer.setAttribute("id", "gameBoard");
     gameBoard.forEach((square, index) => {
@@ -20,71 +17,115 @@ const GameBoard = (() => {
       newBox.classList.add("box");
       newBox.dataset.index = index;
       newBox.addEventListener("click", Game.handleClick);
+      boardContainer.addEventListener("keydown", (e) => {
+        if (e.code === "Space") {
+          Game.handleClick(e);
+        }
+      });
       newBox.tabIndex = "0";
       boardContainer.appendChild(newBox);
     });
+    document.querySelector;
     document.querySelector("main").insertBefore(boardContainer, restart_btn);
   };
-  //Function for updating the gamebboard in the logic as well as on the frontend
   const update = (index, mark) => {
-    let boxes = document.querySelectorAll(".box");
+    boxes = document.querySelectorAll(".box");
     if (boxes.length > 0) boxes[index].innerText = mark;
     gameBoard[index] = mark;
   };
-  //Used by other IIFEs to get access to the current state of the gameboard
   const getGameBoard = () => gameBoard;
   return { render, update, getGameBoard };
 })();
-//Game Logic
 const Game = (() => {
   let players = [];
   let currentPlayer = 0;
+  let isAi;
   let gameOver;
+  let difficulty;
+  let rounds = 0;
   const start = () => {
-    console.log("currentPlayer: ", currentPlayer);
-    gameOver = false;
+    rounds++;
     for (let i = 0; i < 9; i++) GameBoard.update(i, "");
     isAi = document.querySelector("#is_ai").checked;
     let playerOne = document.querySelector("#player_one").value;
     let playerTwo = isAi ? "AI" : document.querySelector("#player_two").value;
-    // difficulty = document.querySelector("#level_select").value;
+    difficulty = document.querySelector("#level_select").value;
     form.style.display = "none";
-    // Only generating new players if there are none
     if (players.length === 0) {
       players = [Player(playerOne, "X"), Player(playerTwo, "O")];
     }
+    if (rounds > 1) {
+      currentPlayer = currentPlayer === 0 ? 1 : currentPlayer;
+    }
+    console.log("current Player", currentPlayer);
+    gameOver = false;
     GameBoard.render();
-    displayController.displayTurn(players[currentPlayer].name);
+    displayController.displayTurns(players[currentPlayer].name);
+    if (isAi && players[currentPlayer] === 1) {
+      switch (difficulty) {
+        case "1": {
+          mediumMove(currentMark);
+          break;
+        }
+        case "2": {
+          hardMove(currentMark);
+          break;
+        }
+        default:
+          {
+            easyMove(currentMark);
+            break;
+          }
+          currentPlayer = currentPlayer === 0 ? 1 : 0;
+      }
+    }
   };
   const handleClick = (currentBox) => {
+    let otherPlayer = currentPlayer === 0 ? 1 : 0;
+    if (gameOver) return;
     let board = GameBoard.getGameBoard();
     let boxIndex = currentBox.target.dataset.index;
-
-    if (gameOver || board[boxIndex] !== "") return;
-
     let currentMark = players[currentPlayer].mark;
     let currentName = players[currentPlayer].name;
-    let otherPlayer = currentPlayer === 0 ? 1 : 0;
     let otherName = players[otherPlayer].name;
 
+    if (board[boxIndex] !== "") return;
     GameBoard.update(boxIndex, currentMark);
-
-    displayController.displayTurn(otherName);
-
-    if (checkForTie()) {
-      gameOver = true;
-      displayController.displayWinner("tie", currentName);
-    }
+    displayController.displayTurns(otherName);
     if (checkForWin(currentMark)) {
       players[currentPlayer].score++;
       gameOver = true;
       displayController.displayWinner("won", currentName);
+    } else if (checkForTie()) {
+      gameOver = true;
+      displayController.displayWinner("tie", currentName);
     }
-    // Also Switches the PLayer who goes first in the next round
-    currentPlayer = currentPlayer === 0 ? 1 : 0;
+    if (isAi && board.some((item) => item === "")) {
+      switch (difficulty) {
+        case "1": {
+          mediumMove(currentMark);
+          break;
+        }
+        case "2": {
+          hardMove(currentMark);
+          break;
+        }
+        default: {
+          easyMove(currentMark);
+          break;
+        }
+      }
+      if (checkForWin(currentMark)) {
+        players[1].score++;
+        gameOver = true;
+        displayController.displayWinner("won", otherName);
+      } else if (checkForTie()) {
+        gameOver = true;
+        displayController.displayWinner("tie", otherName);
+      }
+    } else currentPlayer = currentPlayer === 0 ? 1 : 0;
     displayController.updateScore(players);
   };
-  // Get a list of the indexes which are empty for the AI
   const getEmptyBoxes = () => {
     let board = GameBoard.getGameBoard();
     let emptyBoxes = [];
@@ -93,7 +134,24 @@ const Game = (() => {
     }
     return emptyBoxes;
   };
-  // Check if the current player has won
+  const easyMove = (mark) => {
+    let boxChosen = Math.floor(Math.random() * getEmptyBoxes().length);
+    GameBoard.update(getEmptyBoxes()[boxChosen], mark);
+  };
+  const mediumMove = (mark) => {
+    let boxChosen;
+    if (4 in getEmptyBoxes()) {
+      GameBoard.update(4, mark);
+    } else {
+      boxChosen = Math.floor(Math.random() * getEmptyBoxes().length);
+      GameBoard.update(getEmptyBoxes()[boxChosen], mark);
+    }
+  };
+  const hardMove = (mark) => {
+    console.log("Hard Move", difficulty);
+    let boxChosen = Math.floor(Math.random() * getEmptyBoxes().length);
+    GameBoard.update(getEmptyBoxes()[boxChosen], mark);
+  };
   const checkForWin = (mark) => {
     let board = GameBoard.getGameBoard();
     const WinningCombinations = [
@@ -112,7 +170,6 @@ const Game = (() => {
       });
     });
   };
-  // Check if the game is a draw
   const checkForTie = () => {
     let board = GameBoard.getGameBoard();
     return board.every((box) => box !== "");
@@ -126,7 +183,7 @@ const Game = (() => {
   });
   return { start, handleClick };
 })();
-// Updates status on the frontend
+
 const displayController = (() => {
   const statusDisplay = document.querySelector(".status");
   const scoreOneDisplay = document.querySelector(".score_one");
@@ -135,7 +192,7 @@ const displayController = (() => {
     scoreOneDisplay.innerText = `${players[0].name}: ${players[0].score}`;
     scoreTwoDisplay.innerText = `${players[1].name}: ${players[1].score}`;
   };
-  const displayTurn = (currentPlayer) => {
+  const displayTurns = (currentPlayer) => {
     statusDisplay.innerText = `${currentPlayer}'s Turn`;
   };
   const displayWinner = (result, currentPlayer) => {
@@ -145,5 +202,5 @@ const displayController = (() => {
       statusDisplay.innerText = `${currentPlayer} won`;
     }
   };
-  return { displayWinner, displayTurn, updateScore };
+  return { displayWinner, displayTurns, updateScore };
 })();
