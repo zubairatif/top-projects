@@ -62,7 +62,7 @@ const Game = (() => {
     isAi = document.querySelector("#is_ai").checked;
     let playerTwo = isAi ? "AI" : document.querySelector("#player_two").value;
 
-    difficulty = document.querySelector("#level_select").value;
+    difficulty = Number(document.querySelector("#level_select").value);
     // removing the form from display
     form.style.display = "none";
     // Only generating new players if there are none
@@ -104,16 +104,13 @@ const Game = (() => {
     displayController.updateScore(players);
   };
   function aiTurn(player) {
-    let aiChoice = difficulty == 0 ? getAiChoice.easy() : getAiChoice.hard();
+    let aiChoice = !difficulty ? getAiChoice.easy() : getAiChoice.hard();
     GameBoard.update(aiChoice, player.mark);
-    console.log("Ai is Checking some conditions");
     if (checkForWin(player.mark)) {
-      console.log("Ai is checking for win");
       player.score++;
       gameOver = true;
       displayController.displayWinner("won", player.name);
     } else if (checkForTie()) {
-      console.log("Ai is checking for tie");
       gameOver = true;
       displayController.displayWinner("tie", player.name);
     }
@@ -124,7 +121,6 @@ const Game = (() => {
 
   // Check if the current player has won
   const checkForWin = (mark) => {
-    console.log("Starting to detect win");
     let board = GameBoard.getGameBoard();
     const WinningCombinations = [
       [0, 1, 2],
@@ -173,6 +169,11 @@ const getAiChoice = (() => {
   };
   const hard = () => {
     let board = GameBoard.getGameBoard();
+    if (board[4] === "") {
+      return 4;
+    } else {
+      return easy();
+    }
   };
   return { easy, hard };
 })();
