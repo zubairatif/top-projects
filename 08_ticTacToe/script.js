@@ -36,15 +36,7 @@ const GameBoard = (() => {
   };
   //Used by other IIFEs to get access to the current state of the gameboard
   const getGameBoard = () => gameBoard;
-  const getEmptyBoxes = () => {
-    let board = getGameBoard();
-    let emptyBoxes = [];
-    for (let i = 0; i < board.length; i++) {
-      if (board[i] === "") emptyBoxes.push(i);
-    }
-    return emptyBoxes;
-  };
-  return { render, update, getGameBoard, getEmptyBoxes };
+  return { render, update, getGameBoard };
 })();
 //Game Logic
 const Game = (() => {
@@ -73,6 +65,13 @@ const Game = (() => {
     displayController.displayTurn(players[currentPlayer].name);
     if (isAi && players[currentPlayer].ai) aiTurn(players[currentPlayer]);
   };
+  const getEmptyBoxes = (board) => {
+    let emptyBoxes = [];
+    for (let i = 0; i < board.length; i++) {
+      if (board[i] === "") emptyBoxes.push(i);
+    }
+    return emptyBoxes;
+  };
   const handleClick = (currentBox) => {
     let board = GameBoard.getGameBoard();
     let boxIndex = currentBox.target.dataset.index;
@@ -88,11 +87,11 @@ const Game = (() => {
 
     if (!isAi) displayController.displayTurn(otherName);
 
-    if (checkForWin(currentMark)) {
+    if (checkForWin(board, currentMark)) {
       players[currentPlayer].score++;
       gameOver = true;
       displayController.displayWinner("won", currentName);
-    } else if (checkForTie()) {
+    } else if (checkForTie(GameBoard.getGameBoard())) {
       gameOver = true;
       displayController.displayWinner("tie", currentName);
     }
@@ -104,24 +103,21 @@ const Game = (() => {
     displayController.updateScore(players);
   };
   function aiTurn(player) {
-    let aiChoice = !difficulty ? getAiChoice.easy() : getAiChoice.hard();
+    let aiChoice = !difficulty ? easy() : hard();
     GameBoard.update(aiChoice, player.mark);
-    if (checkForWin(player.mark)) {
+    if (checkForWin(GameBoard.getGameBoard(), player.mark)) {
       player.score++;
       gameOver = true;
       displayController.displayWinner("won", player.name);
-    } else if (checkForTie()) {
+    } else if (checkForTie(GameBoard.getGameBoard())) {
       gameOver = true;
       displayController.displayWinner("tie", player.name);
     }
-
     currentPlayer = currentPlayer === 0 ? 1 : 0;
   }
-  // Get a list of the indexes which are empty for the AI
 
   // Check if the current player has won
-  const checkForWin = (mark) => {
-    let board = GameBoard.getGameBoard();
+  const checkForWin = (board, mark) => {
     const WinningCombinations = [
       [0, 1, 2],
       [3, 4, 5],
@@ -132,6 +128,7 @@ const Game = (() => {
       [0, 4, 8],
       [2, 4, 6],
     ];
+
     let winningIndexes = 0;
     let winResult = WinningCombinations.some((combination) => {
       winningIndexes = combination;
@@ -147,8 +144,7 @@ const Game = (() => {
     });
   };
   // Check if the game is a draw
-  const checkForTie = () => {
-    let board = GameBoard.getGameBoard();
+  const checkForTie = (board) => {
     return board.every((box) => box !== "");
   };
   const form = document.getElementById("choose_players");
@@ -158,24 +154,28 @@ const Game = (() => {
     e.preventDefault();
     start();
   });
-  return { start, handleClick };
-})();
-// Generates AI moves
-const getAiChoice = (() => {
+
+  // Generates AI moves
   const easy = () => {
-    let emptyBoxes = GameBoard.getEmptyBoxes();
+    let emptyBoxes = getEmptyBoxes(GameBoard.getGameBoard());
     let boxChosen = Math.floor(Math.random() * emptyBoxes.length);
     return emptyBoxes[boxChosen];
   };
   const hard = () => {
     let board = GameBoard.getGameBoard();
-    if (board[4] === "") {
+    if (
+      board[4] === "" &&
+      getEmptyBoxes(GameBoard.getGameBoard()).length === 8
+    ) {
       return 4;
+    } else if (getEmptyBoxes(GameBoard.getGameBoard()).length === 9) {
+      return 2;
     } else {
       return easy();
     }
   };
-  return { easy, hard };
+
+  return { start, handleClick };
 })();
 // Updates status on the frontend
 const displayController = (() => {

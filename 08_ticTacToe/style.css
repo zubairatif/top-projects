@@ -41,6 +41,7 @@ main > * {
   font-size: 2.5rem;
   font-family: cursive;
   border: 1px solid black;
+  user-select: none;
 }
 
 .box:not(:first-child):not(:nth-child(2)):not(:nth-child(3)) {
