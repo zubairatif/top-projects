@@ -1,6 +1,6 @@
 // Factory Function for creating players
-const Player = (name, mark, ai, score = 0) => {
-  return { name, mark, score, ai };
+const Player = (name, mark, ai, points = 0) => {
+  return { name, mark, points, ai };
 };
 // Gameboard Module stores the state of the gameboard
 const GameBoard = (() => {
@@ -40,11 +40,13 @@ const GameBoard = (() => {
 })();
 //Game Logic
 const Game = (() => {
+  let round = 0;
   let players = [];
   let currentPlayer = 0;
   let gameOver;
   let difficulty;
   const start = () => {
+    round++;
     gameOver = false;
     // clearing the gameBoard array
     for (let i = 0; i < 9; i++) GameBoard.update(i, "");
@@ -63,7 +65,10 @@ const Game = (() => {
     }
     GameBoard.render();
     displayController.displayTurn(players[currentPlayer].name);
-    if (isAi && players[currentPlayer].ai) aiTurn(players[currentPlayer]);
+    if (round % 2 == 0) currentPlayer = currentPlayer === 0 ? 1 : 0;
+    if (isAi && players[currentPlayer].ai) {
+      aiTurn(players[currentPlayer]);
+    }
   };
   const getEmptyBoxes = (board) => {
     let emptyBoxes = [];
@@ -88,36 +93,36 @@ const Game = (() => {
     if (!isAi) displayController.displayTurn(otherName);
 
     if (checkForWin(board, currentMark)) {
-      players[currentPlayer].score++;
+      players[currentPlayer].points++;
       gameOver = true;
       displayController.displayWinner("won", currentName);
     } else if (checkForTie(GameBoard.getGameBoard())) {
       gameOver = true;
       displayController.displayWinner("tie", currentName);
     }
-    // Also Switches the PLayer who goes first in the next round
     currentPlayer = currentPlayer === 0 ? 1 : 0;
-
     if (players[currentPlayer].ai === true && gameOver === false)
       aiTurn(players[currentPlayer]);
-    displayController.updateScore(players);
+    displayController.updatepoints(players);
   };
   function aiTurn(player) {
-    let aiChoice = !difficulty ? easy() : hard();
+    let aiChoice = !difficulty
+      ? easy()
+      : findBestMove(GameBoard.getGameBoard());
     GameBoard.update(aiChoice, player.mark);
+    currentPlayer = currentPlayer === 0 ? 1 : 0;
     if (checkForWin(GameBoard.getGameBoard(), player.mark)) {
-      player.score++;
+      player.points++;
       gameOver = true;
       displayController.displayWinner("won", player.name);
     } else if (checkForTie(GameBoard.getGameBoard())) {
       gameOver = true;
       displayController.displayWinner("tie", player.name);
     }
-    currentPlayer = currentPlayer === 0 ? 1 : 0;
   }
 
   // Check if the current player has won
-  const checkForWin = (board, mark) => {
+  const checkForWin = (board, mark, check = false) => {
     const WinningCombinations = [
       [0, 1, 2],
       [3, 4, 5],
@@ -128,15 +133,16 @@ const Game = (() => {
       [0, 4, 8],
       [2, 4, 6],
     ];
-
-    let winningIndexes = 0;
-    let winResult = WinningCombinations.some((combination) => {
-      winningIndexes = combination;
-      return combination.every((index) => {
-        return board[index] == mark;
+    if (!check) {
+      let winningIndexes = 0;
+      let winResult = WinningCombinations.some((combination) => {
+        winningIndexes = combination;
+        return combination.every((index) => {
+          return board[index] == mark;
+        });
       });
-    });
-    if (winResult) displayController.styleWinner(winningIndexes);
+      if (winResult) displayController.styleWinner(winningIndexes);
+    }
     return WinningCombinations.some((combination) => {
       return combination.every((index) => {
         return board[index] == mark;
@@ -147,13 +153,6 @@ const Game = (() => {
   const checkForTie = (board) => {
     return board.every((box) => box !== "");
   };
-  const form = document.getElementById("choose_players");
-  const restartBtn = document.getElementById("restart_btn");
-  restartBtn.addEventListener("click", start);
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    start();
-  });
 
   // Generates AI moves
   const easy = () => {
@@ -161,8 +160,47 @@ const Game = (() => {
     let boxChosen = Math.floor(Math.random() * emptyBoxes.length);
     return emptyBoxes[boxChosen];
   };
-  const hard = () => {
-    let board = GameBoard.getGameBoard();
+  function minimax(board, depth, isMaxPlayer, alpha, beta) {
+    if (checkForWin(board, players[0].mark, true)) {
+      return -10 - depth;
+    } else if (checkForWin(board, players[1].mark, true)) {
+      return 10 - depth;
+    } else if (checkForTie(board)) {
+      return 0;
+    }
+    if (isMaxPlayer) {
+      let bestScore = -Infinity;
+      for (let i = 0; i < 9; i++) {
+        if (board[i] === "") {
+          board[i] = "O";
+          const score = minimax(board, depth + 1, false, alpha, beta);
+          board[i] = "";
+          bestScore = Math.max(bestScore, score);
+          alpha = Math.max(alpha, bestScore);
+          if (beta <= alpha) {
+            break;
+          }
+        }
+      }
+      return bestScore;
+    } else {
+      let bestScore = Infinity;
+      for (let i = 0; i < 9; i++) {
+        if (board[i] === "") {
+          board[i] = "X";
+          const score = minimax(board, depth + 1, true, alpha, beta);
+          board[i] = "";
+          bestScore = Math.min(bestScore, score);
+          beta = Math.min(beta, bestScore);
+          if (beta <= alpha) {
+            break;
+          }
+        }
+      }
+      return bestScore;
+    }
+  }
+  function findBestMove(board) {
     if (
       board[4] === "" &&
       getEmptyBoxes(GameBoard.getGameBoard()).length === 8
@@ -171,21 +209,43 @@ const Game = (() => {
     } else if (getEmptyBoxes(GameBoard.getGameBoard()).length === 9) {
       return 2;
     } else {
-      return easy();
+      let bestScore = -Infinity;
+      let bestMove = -1;
+      let alpha = -Infinity;
+      let beta = Infinity;
+      for (let i = 0; i < 9; i++) {
+        if (board[i] === "") {
+          board[i] = players[1].mark;
+          let score = minimax(board, 0, false, alpha, beta);
+          board[i] = "";
+          if (score > bestScore) {
+            bestScore = score;
+            bestMove = i;
+          }
+        }
+      }
+      return bestMove;
     }
-  };
+  }
 
+  const form = document.getElementById("choose_players");
+  const restartBtn = document.getElementById("restart_btn");
+  restartBtn.addEventListener("click", start);
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    start();
+  });
   return { start, handleClick };
 })();
 // Updates status on the frontend
 const displayController = (() => {
   let boxes;
   const statusDisplay = document.querySelector(".status");
-  const scoreOneDisplay = document.querySelector(".score_one");
-  const scoreTwoDisplay = document.querySelector(".score_two");
-  const updateScore = (players) => {
-    scoreOneDisplay.innerText = `${players[0].name}: ${players[0].score}`;
-    scoreTwoDisplay.innerText = `${players[1].name}: ${players[1].score}`;
+  const pointsOneDisplay = document.querySelector(".points_one");
+  const pointsTwoDisplay = document.querySelector(".points_two");
+  const updatepoints = (players) => {
+    pointsOneDisplay.innerText = `${players[0].name}: ${players[0].points}`;
+    pointsTwoDisplay.innerText = `${players[1].name}: ${players[1].points}`;
   };
   const displayTurn = (currentPlayer) => {
     statusDisplay.innerText = `${currentPlayer}'s Turn`;
@@ -203,5 +263,5 @@ const displayController = (() => {
       boxes[index].classList.add("win");
     });
   };
-  return { displayWinner, displayTurn, updateScore, styleWinner };
+  return { displayWinner, displayTurn, updatepoints, styleWinner };
 })();
