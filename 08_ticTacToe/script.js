@@ -161,6 +161,7 @@ const Game = (() => {
     return emptyBoxes[boxChosen];
   };
   function minimax(board, depth, isMaxPlayer, alpha, beta) {
+    const boardCacheKey = getBoardCacheKey(board);
     if (checkForWin(board, players[0].mark, true)) {
       return -10 - depth;
     } else if (checkForWin(board, players[1].mark, true)) {
