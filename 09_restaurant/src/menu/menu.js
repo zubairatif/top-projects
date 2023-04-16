@@ -1,10 +1,10 @@
 function renderMenuPage() {
-  //container
   const Container = document.querySelector("#content");
-
   const Menu = document.createElement("div");
-  Menu.classList.add("content");
+  const title = document.createElement("h1");
+  title.innerText = "View Our Delicious Menu";
+  Menu.appendChild(title);
   Container.appendChild(Menu);
-  console.log("Menu");
+  console.log("Home");
 }
 export default renderMenuPage;
