@@ -5,6 +5,17 @@ function renderHeader() {
   //container
   const Container = document.querySelector("#content");
   const Header = document.createElement("header");
+  const supportsNesting = document.createElement("div");
+  supportsNesting.classList.add("supports_nesting");
+  Header.appendChild(supportsNesting);
+
+  setTimeout(function () {
+    if (supportsNesting.offsetParent == null) {
+      alert(
+        "Your Browser doesn't Support CSS Nesting so the Styling will not work.\n Please use the latest version of a Chromium-based browser or Safari"
+      );
+    }
+  }, 2000);
 
   const logo = document.createElement("div");
   logo.classList.add("logo");

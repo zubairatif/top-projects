@@ -7,7 +7,6 @@ function renderHomePage() {
   title.innerText = "Eat. Code. Repeat";
   Home.appendChild(title);
   Container.appendChild(Home);
-  console.log("Home");
 }
 
 export default renderHomePage;

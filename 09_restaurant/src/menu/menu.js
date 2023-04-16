@@ -5,6 +5,5 @@ function renderMenuPage() {
   title.innerText = "View Our Delicious Menu";
   Menu.appendChild(title);
   Container.appendChild(Menu);
-  console.log("Home");
 }
 export default renderMenuPage;
