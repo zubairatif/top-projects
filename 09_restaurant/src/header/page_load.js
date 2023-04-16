@@ -24,9 +24,9 @@ function renderHeader() {
 
   const nav = document.createElement("nav");
   nav.innerHTML = `<ul>
-  <li class="tab" data-tab="home"><a href="#">Home</a></li>
-  <li class="tab" data-tab="menu"><a href="#">Menu</a></li>
-  <li class="tab" data-tab="contact"><a href="#">Contact</a></li>
+  <li aria-selected="true" class="tab" data-tab="home">Home</li>
+  <li aria-selected="false" class="tab" data-tab="menu">Menu</li>
+  <li aria-selected="false" class="tab" data-tab="contact">Contact</li>
 </ul>`;
   Header.appendChild(nav);
 
