@@ -25,6 +25,7 @@
         <p>You <em>know</em> you want to.</p>
         <form method="post" id="form">
           <h2>Let's do this!</h2>
+          <span class="error active">Please do this</span>
           <label
             >First Name
             <input
@@ -47,6 +48,29 @@
               placeholder="&nbsp;"
               required
           /></label>
+          <label
+            >Country
+            <input
+              type="text"
+              name="country"
+              id="country"
+              pattern="[a-zA-Z]"
+              title="Letters only"
+              placeholder="&nbsp;"
+              required
+          /></label>
+          <label
+            >Zip Code
+            <input
+              type="text"
+              name="zipcode"
+              id="zipCode"
+              pattern="^[0-9A-Za-z\s?]{6,7}$"
+              title="6-digit Zipcode"
+              placeholder="&nbsp;"
+              required
+          /></label>
+
           <label
             >Email
             <input
