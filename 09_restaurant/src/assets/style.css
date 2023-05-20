@@ -7,7 +7,7 @@
 :root {
   --light: #f9a826;
   --dark: #683c21;
-  --darker: #533929;
+  --darker: #362419;
 }
 * {
   box-sizing: border-box;
@@ -19,8 +19,20 @@ body {
   height: 100%;
 }
 body {
-  font-family: Verdana, Geneva, sans-serif;
+  font-family: Verdana, sans-serif;
   background-color: bisque;
+}
+::selection {
+  background-color: var(--darker);
+  color: white;
+}
+::-moz-selection {
+  background-color: var(--darker);
+  color: white;
+}
+img {
+  max-width: 100%;
+  display: block;
 }
 header {
   background: #53392933;
@@ -79,16 +91,34 @@ h1 {
   font-family: "Amaranth", "Segoe UI", sans-serif;
   width: fit-content;
   margin: 2.5rem auto;
+  font-weight: bolder;
+  color: var(--darker);
+}
+h2 {
+  font-size: 2.1rem;
+  font-family: "Segoe UI", sans-serif;
+  margin-block-end: 0.7rem;
+  font-weight: bold;
 }
 .supports_nesting {
-  width: 1px;
-  height: 1px;
-  position: absolute;
-  background: transparent;
-  display: none;
+  color: black;
+  background: #fff;
+  padding: 1rem;
+  display: block;
 }
 @supports selector(&) {
   .supports_nesting {
-    display: block;
+    display: none;
   }
+}
+main {
+  padding: 1rem 2.5rem;
+  border-top: 5px solid #111;
+}
+#hero {
+  display: flex;
+  gap: 3%;
+}
+#hero > * {
+  min-width: 48.5%;
 }

@@ -2,20 +2,10 @@ import Icon from "./icon.svg";
 import Logo from "./logo.webp";
 
 function renderHeader() {
-  //container
-  const Container = document.querySelector("#content");
-  const Header = document.createElement("header");
-  const supportsNesting = document.createElement("div");
-  supportsNesting.classList.add("supports_nesting");
-  Header.appendChild(supportsNesting);
+  const Container = document.createElement("main");
+  Container.id = "content";
 
-  setTimeout(function () {
-    if (supportsNesting.offsetParent == null) {
-      alert(
-        "Your Browser doesn't Support CSS Nesting so the Styling will not work.\n Please use the latest version of a Chromium-based browser or Safari"
-      );
-    }
-  }, 2000);
+  const Header = document.createElement("header");
 
   const logo = document.createElement("div");
   logo.classList.add("logo");
@@ -38,7 +28,7 @@ function renderHeader() {
   <li aria-selected="true" class="tab" data-tab="home">Home</li>
   <li aria-selected="false" class="tab" data-tab="menu">Menu</li>
   <li aria-selected="false" class="tab" data-tab="contact">Contact</li>
-</ul>`;
+  </ul>`;
   Header.appendChild(nav);
 
   const linksDiv = document.createElement("div");
@@ -53,6 +43,20 @@ function renderHeader() {
 
   Header.appendChild(linksDiv);
 
-  Container.appendChild(Header);
+  document.body.appendChild(Header);
+
+  const supportsNesting = document.createElement("div");
+  supportsNesting.classList.add("supports_nesting");
+  supportsNesting.textContent =
+    "Please use the latest version of Chrome or Safari for optimal viewing experience.";
+  document.body.insertBefore(supportsNesting, Header);
+
+  if (!supportsNesting.offsetParent == null)
+    console.log("Nesting is not supported");
+
+  const title = document.createElement("h1");
+  Container.appendChild(title);
+  
+  document.body.appendChild(Container);
 }
 export default renderHeader;

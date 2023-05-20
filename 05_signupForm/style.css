@@ -126,7 +126,8 @@ input:not(:placeholder-shown):invalid {
 #passwordReqs {
   display: none;
 }
-form:has(#password:focus:invalid) #passwordReqs {
+form:has(#password:focus) #passwordReqs,
+form:has(#password:not(:placeholder-shown):invalid) #passwordReqs {
   display: inline-block !important;
 }
 
@@ -160,6 +161,14 @@ button:hover {
 p#loginText {
   font-size: 1rem;
   font-weight: 400;
+}
+
+.error {
+  flex-basis: 100%;
+  color: green;
+}
+.error.active {
+  color: orangered;
 }
 
 @media screen and (max-width: 850px) {

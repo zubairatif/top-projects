@@ -11,7 +11,6 @@ const tabLinks = document.querySelectorAll(".tab");
 tabLinks.forEach((link) => {
   link.addEventListener("click", (e) => {
     if (e.target.dataset["tab"] === currentTab) return;
-    console.log("e.target.dataset.tab: ", e.target.dataset["tab"]);
     while (Container.childNodes.length > 1) {
       if (Container.lastChild.tagName !== "HEADER") {
         content.removeChild(content.lastChild);

@@ -25,16 +25,18 @@
         <p>You <em>know</em> you want to.</p>
         <form method="post" id="form">
           <h2>Let's do this!</h2>
-          <span class="error active">Please do this</span>
+          <span aria-live="polite" class="error">All Good :)</span>
           <label
             >First Name
             <input
               type="text"
               name="firstName"
               id="firstName"
+              class="name"
               pattern="[a-zA-Z]*$"
               title="Letters only"
               placeholder="&nbsp;"
+              minlength="2"
               required
           /></label>
           <label
@@ -43,9 +45,11 @@
               type="text"
               name="lastName"
               id="lastName"
+              class="name"
               pattern="[a-zA-Z]*$"
               title="Letters only"
               placeholder="&nbsp;"
+              minlength="2"
               required
           /></label>
           <label
@@ -57,6 +61,7 @@
               pattern="[a-zA-Z]"
               title="Letters only"
               placeholder="&nbsp;"
+              minlength="3"
               required
           /></label>
           <label
@@ -68,6 +73,7 @@
               pattern="^[0-9A-Za-z\s?]{6,7}$"
               title="6-digit Zipcode"
               placeholder="&nbsp;"
+              minlength="6"
               required
           /></label>
 
@@ -78,6 +84,7 @@
               name="email"
               id="email"
               placeholder="&nbsp;"
+              minlength="3"
               required
           /></label>
           <label
@@ -90,6 +97,7 @@
               id="phone"
               title="phone number with area code"
               placeholder="&nbsp;"
+              minlength="9"
               required
           /></label>
           <label
@@ -100,6 +108,7 @@
               id="password"
               placeholder="&nbsp;"
               autocomplete="new-password"
+              minlength="8"
               required
           /></label>
           <label
@@ -110,13 +119,15 @@
               name="confirm"
               id="confirm"
               placeholder="&nbsp;"
+              minlength="8"
               required
           /></label>
           <div id="passwordReqs">
             <ul>
-              <li>HELlo</li>
-              <li>HELlo</li>
-              <li>HELlo</li>
+              <li>atleast 8 characters</li>
+              <li>1 uppercase and 1 lowercase</li>
+              <li>1 special character</li>
+              <li>1 digit (0-9)</li>
             </ul>
           </div>
         </form>
